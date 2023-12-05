@@ -119,18 +119,3 @@ void database_read()
 
     fin.close();
 }
-
-// Algo verificare
-
-int database_n_corigenti()
-{
-    int k = 0;
-    for (int i = 1; i <= database_size; i++)
-        k += database_ver_corigent(i);
-    return k;
-}
-
-bool database_ver_corigent(int i)
-{
-    return (studenti[i].medie >= medie_min);
-}

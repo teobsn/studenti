@@ -16,6 +16,19 @@
 #include "database.h"
 #include "search.h"
 
+bool database_ver_corigent(int i)
+{
+    return (studenti[i].medie >= medie_min);
+}
+
+int database_n_corigenti()
+{
+    int k = 0;
+    for (int i = 1; i <= database_size; i++)
+        k += database_ver_corigent(i);
+    return k;
+}
+
 int main()
 {
     firstrun();
