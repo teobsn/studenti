@@ -48,20 +48,8 @@ int main()
     firstrun();
     settings_read();
     database_read();
-
-    // Ncurses init
-    /*
-    initscr();
-    raw();
-    noecho();
-    keypad(stdscr, TRUE);
-    */
-    for (int i = 1; i <= database_length; i++)
-        std::cerr << studenti[i].cod << " " << studenti[i].nume << " " << studenti[i].prenume << " " << studenti[i].dn.an << "/" << studenti[i].dn.luna << "/" << studenti[i].dn.zi << " " << studenti[i].grupa << " " << studenti[i].medie << " " << studenti[i].val_bursa << "\n";
-
-    database_sort_az();
-    for (int i = 1; i <= database_length; i++)
-        std::cerr << studenti[i].cod << " " << studenti[i].nume << " " << studenti[i].prenume << " " << studenti[i].dn.an << "/" << studenti[i].dn.luna << "/" << studenti[i].dn.zi << " " << studenti[i].grupa << " " << studenti[i].medie << " " << studenti[i].val_bursa << "\n";
+    
+    ui_start();
 
     return 0;
 }
