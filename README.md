@@ -19,7 +19,7 @@
 - În cazul în care librăria `ncurses` nu este deja instalată, instalarea ei se poate realiza cu ajutorul următorului ghid: https://web.archive.org/web/20230801164341/https://e-l.unifi.it/pluginfile.php/805205/mod_resource/content/0/ncurses%20installation%20-%20en.pdf
 ### Utilizarea macrourilor #define
 - Multe valori ale lungimilor/mărimilor șirurilor de caractere sau a altor date/structuri/variabile care au fost alese în mod arbitrar sunt definite în fișierul `define.h`, pentru a putea fi modificate rapid în cazul în care acest lucru este necesar.
-- Folosirea unui vector de tipul `std::vector` poate elimina necesitatea definirii mărimilor anumitor date, întrucât acesta poate să își modifice mărimea dinamic.
+- Folosirea unui vector de tipul `std::vector` ar putea elimina necesitatea definirii mărimilor anumitor date, întrucât acesta poate să își modifice mărimea dinamic.
 ### Structura programului
 - Majoritatea, dacă nu toate subprogramele de care se folosește programul sunt definite în fișiere separate de `main.cpp`
 - Numele fișierelor reprezintă categoria din care fac parte subprogramele definite în acesta:
@@ -87,7 +87,7 @@ struct student
 ### Fișier configurare
 - Programul se folosește de un fișier de configurare (`settings.ini`). Acesta conține parametri ce pot fi modificați după cerințele utilizatorului.
 - Fișierul de configurare este generat automat dacă nu există deja în folderul (directorul) programului și are ca valori implicite valorile cerinței problemei.
-- Programul analizează valorile fișierului de configurare și, la pornire, va afișa erori dacă acesta conține parametrii nedefiniți, dacă valorile anumitor parametri nu au sens (de exemplu, suma procentuală de studenți ce primesc bursă nu poate depăși `100%`). De asemenea, programul va afișa orice parametru lipsă.
+- Programul analizează valorile fișierului de configurare și, la pornire, va afișa erori dacă acesta conține parametrii nedefiniți, dacă valorile anumitor parametri nu au sens (de exemplu, suma procentuală de studenți ce primesc bursă nu poate depăși `100%`). De asemenea, programul va afișa eroare pentru fiecare parametru lipsă.
 ##### Listă parametri:
 |Parametru|Valoare implicită|Descriere|
 |---|--:|---|
