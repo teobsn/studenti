@@ -70,7 +70,7 @@ void database_set(char line[], int i)
 
 void database_add(char line[])
 {
-    database_set(line, database_length + 1);
+    database_set(line, database_length);
     database_length++;
 }
 
@@ -114,8 +114,69 @@ void database_read()
         if (strlen(line))
             database_add(line);
     }
+    database_length--;
 
     database_validate();
 
     fin.close();
+}
+
+// Database operations
+
+int database_ctoi(int cod)
+{
+    int i = 1;
+    while (studenti[i++].cod != cod)
+        i++;
+    return i;
+}
+
+bool database_ver_ap_gr(int i, int gr)
+{
+    return studenti[i].grupa == gr;
+}
+
+int database_n_ap_gr(int gr)
+{
+    int n = 0;
+    for (int i = 1; i <= database_length; i++)
+        n += database_ver_ap_gr(i, gr);
+    return n;
+}
+
+void database_cat_name(int i, char c[])
+{
+    strcpy(c, studenti[i].nume);
+    strcat(c, " ");
+    strcat(c, studenti[i].prenume);
+}
+
+void database_sort_alf()
+{
+    int i, j;
+    char fnc[database_n_maxlength + database_pn_maxlength + 1], fni[database_n_maxlength + database_pn_maxlength + 1];
+
+    for (i = 2; i <= database_length; i++)
+    {
+        struct student aux = studenti[i];
+        database_cat_name(i, fnc);
+        j = i - 1;
+
+        database_cat_name(j, fni);
+        while (j >= 1 && strcmp(fni, fnc) > 0)
+        {
+            studenti[j + 1] = studenti[j];
+            j--;
+            database_cat_name(j, fni);
+        }
+
+        studenti[j + 1] = aux;
+    }
+}
+
+void database_debug()
+{
+    for (int i = 0; i <= database_length; i++)
+        std::cerr << studenti[i].cod << " " << studenti[i].nume << " " << studenti[i].prenume << " " << studenti[i].dn.an << "/" << studenti[i].dn.luna << "/" << studenti[i].dn.zi << " " << studenti[i].grupa << " " << studenti[i].medie << " " << studenti[i].val_bursa << "\n";
+    std::cerr << "\n";
 }

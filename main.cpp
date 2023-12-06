@@ -16,19 +16,8 @@
 #include "database.h"
 #include "search.h"
 
-void database_sort_az()
-{
-    for (int i = 1; i <= database_size - 1; i++)
-        for (int j = i + 1; j <= database_size; j++)
-        {
-            if (strcmp(studenti[i].nume, studenti[j].nume) > 0 || (strcmp(studenti[i].nume, studenti[j].nume) == 0 && strcmp(studenti[i].prenume, studenti[j].prenume) > 0))
-            {
-                struct student aux = studenti[i];
-                studenti[i] = studenti[j];
-                studenti[j] = aux;
-            }
-        }
-}
+// Urmatoarele 2 subprograme nu se afla in database.h deoarece se folosesc
+// de variabila "medie_min" care este declarata in settings.h ¯\_(ツ)_/¯
 
 bool database_ver_corigent(int i)
 {
@@ -48,7 +37,7 @@ int main()
     firstrun();
     settings_read();
     database_read();
-    
+
     ui_start();
 
     return 0;
