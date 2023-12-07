@@ -29,3 +29,7 @@
 
 #define controls_enter KEY_ENTER
 #define controls_enter_2 10
+
+#define controls_backsp KEY_BACKSPACE
+#define controls_backsp_2 127
+#define controls_esc 27 // ESC or ALT https://stackoverflow.com/questions/5977395/ncurses-and-esc-alt-keys

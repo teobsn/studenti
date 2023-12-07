@@ -2,19 +2,45 @@
 #include <ncurses.h>
 #include <cstring>
 
-bool ui_exit = false;
-
-char ui_menu_opts1[][ui_maxlength] = {
-    "Baza de date",
-    "Setari",
-    "Despre",
-    "Iesire"};
-
 char ui_about_1[][ui_maxlength] = {
     "Andrei Angelo-Iustin",
     "Bostan Codrut-Teodor",
     "Matei Daria",
     "Jucan Alexandra"};
+
+int ncif(int x)
+{
+    uint8_t n = 0;
+    while (x)
+        x /= 10, n++;
+    return n;
+}
+
+char* itoa(int value, char* result, int base) { // https://stackoverflow.com/questions/8257714/how-can-i-convert-an-int-to-a-string-in-c
+    // check that the base if valid
+    if (base < 2 || base > 36) { *result = '\0'; return result; }
+
+    char* ptr = result, *ptr1 = result, tmp_char;
+    int tmp_value;
+
+    do {
+        tmp_value = value;
+        value /= base;
+        *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * base)];
+    } while ( value );
+
+    // Apply negative sign
+    if (tmp_value < 0) *ptr++ = '-';
+    *ptr-- = '\0';
+  
+    // Reverse the string
+    while(ptr1 < ptr) {
+        tmp_char = *ptr;
+        *ptr--= *ptr1;
+        *ptr1++ = tmp_char;
+    }
+    return result;
+}
 
 int ui_input_arrowmenu1(int height, int oy, int ox)
 {
@@ -75,13 +101,6 @@ int ui_input_arrowmenu1(int height, int oy, int ox)
     return y - oy;
 }
 
-void ui_draw_database()
-{
-}
-
-void ui_draw_settings()
-{
-}
 
 void ui_draw_about()
 {
@@ -104,61 +123,7 @@ void ui_draw_about()
     while (run)
     {
         int key = getch();
-        if ((key == controls_enter) || (key == controls_enter_2))
-            clear(), run = false;
+        if ((key == controls_enter) || (key == controls_enter_2) || (key == controls_esc))
+            run = false;
     }
-}
-
-void ui_draw_mainmenu()
-{
-    int k = -2;
-    for (int i = 0; i <= 3; i++)
-        mvaddstr(LINES / 2 + k + i, COLS / 2 + 1, ui_menu_opts1[i]);
-
-    // https://pubs.opengroup.org/onlinepubs/7908799/xcurses/chgat.html
-    // https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/attrib.html
-    mvchgat(LINES / 2 + k + 0, COLS / 2 + 1, 1, A_UNDERLINE, NULL, NULL);
-    mvchgat(LINES / 2 + k + 1, COLS / 2 + 1, 1, A_UNDERLINE, NULL, NULL);
-    mvchgat(LINES / 2 + k + 2, COLS / 2 + 1, 1, A_UNDERLINE, NULL, NULL);
-    mvchgat(LINES / 2 + k + 3, COLS / 2 + 1, 1, A_UNDERLINE, NULL, NULL);
-
-    int r = ui_input_arrowmenu1(4, LINES / 2 + k, COLS / 2 - 1);
-    switch (r)
-    {
-    case 0:
-        ui_draw_database();
-        break;
-    case 1:
-        ui_draw_settings();
-        break;
-    case 2:
-        ui_draw_about();
-        break;
-    case 3:
-        ui_exit = true;
-        break;
-    }
-}
-
-void ui_start()
-{
-    initscr();
-    if (has_colors())
-    {
-        use_default_colors();
-        start_color();
-        init_pair(1, COLOR_GREEN, -1);
-        init_pair(2, COLOR_CYAN, -1);
-        init_pair(3, COLOR_RED, -1);
-        init_pair(4, COLOR_BLUE, -1);
-    }
-    raw();
-    noecho();
-    keypad(stdscr, TRUE);
-
-    while (!ui_exit)
-        ui_draw_mainmenu();
-
-    clear();
-    refresh();
 }
