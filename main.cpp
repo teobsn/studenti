@@ -240,8 +240,10 @@ int main()
     settings_read();
     database_read();
     database_update_bursieri();
+    database_sort_cod();
 
     ui_start();
-
+    
+    endwin();
     return 0;
 }

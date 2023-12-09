@@ -286,6 +286,25 @@ void database_sort_gr_medie()
     }
 }
 
+void database_sort_cod()
+{
+    int i, j;
+
+    for (i = 2; i <= database_length; i++)
+    {
+        struct student aux = studenti[i];
+        j = i - 1;
+
+        while (j >= 1 && studenti[j].cod > aux.cod)
+        {
+            studenti[j + 1] = studenti[j];
+            j--;
+        }
+
+        studenti[j + 1] = aux;
+    }
+}
+
 void database_update_bursieri()
 {
     database_sort_gr_medie();
