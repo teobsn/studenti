@@ -16,6 +16,19 @@ char ui_about_1[][ui_maxlength] = {
     "Matei Daria",
     "Jucan Alexandra"};
 
+char ui_menu_opts1[][ui_maxlength] = {
+    "Baza de date",
+    "Setari",
+    "Despre",
+    "Iesire"};
+
+char ui_settings_list[][ui_maxlength] = {
+    "Valoare Bursa 1",
+    "Valoare Bursa 2",
+    "Procent Studenti Bursa 1",
+    "Procent Studenti Bursa 2",
+    "Medie minima promovare"};
+
 int ncif(int x)
 {
     uint8_t n = 0;

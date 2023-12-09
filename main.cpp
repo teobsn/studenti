@@ -17,7 +17,6 @@
 #include <cstdint>
 #endif
 
-
 // Fisiere subprograme
 #include "ui.h"
 #include "settings.h"
@@ -27,23 +26,13 @@
 
 bool ui_exit = false;
 
-char ui_menu_opts1[][ui_maxlength] = {
-    "Baza de date",
-    "Setari",
-    "Despre",
-    "Iesire"};
-
-char ui_settings_list[][ui_maxlength] = {
-    "Valoare Bursa 1",
-    "Valoare Bursa 2",
-    "Procent Studenti Bursa 1",
-    "Procent Studenti Bursa 2",
-    "Medie minima promovare"};
-
 // Subprograme intefata
 
 void ui_draw_database()
 {
+    clear();
+    int k = -1;
+
 }
 
 void ui_draw_settings()
@@ -139,8 +128,16 @@ void ui_draw_settings()
         }
 
         mvaddstr(y, ox, ui_symb_selector);
-        mvaddstr(y, ox + 2 + ncif(set[y - oy]), " ");
-        move(y, ox + 2 + ncif(set[y - oy]));
+        if (ncif(set[y - oy]))
+        {
+            mvaddstr(y, ox + 2 + ncif(set[y - oy]), " ");
+            move(y, ox + 2 + ncif(set[y - oy]));
+        }
+        else
+        {
+            mvaddstr(y, ox + 2, "0");
+            move(y, ox + 3);
+        }
     }
 
     for (int i = 0; i <= 4; i++)
@@ -164,6 +161,7 @@ void ui_draw_settings()
             break;
         }
     }
+    database_update_bursieri();
 }
 
 void ui_draw_mainmenu()
@@ -241,6 +239,7 @@ int main()
     firstrun();
     settings_read();
     database_read();
+    database_update_bursieri();
 
     ui_start();
 

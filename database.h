@@ -1,4 +1,5 @@
 #include <cstring>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include "define.h"
@@ -144,6 +145,35 @@ int database_n_ap_gr(int gr)
     return n;
 }
 
+int database_n_bursieri_gr_b1(int gr)
+{
+    int nt = database_n_ap_gr(gr);
+    float nb = nt * ((float)procstud_bursa1 / 100);
+
+    int nb_int;
+    if (nb > (int)nb)
+        nb_int = floor(nb) + 1;
+
+    return nb_int;
+}
+
+int database_n_bursieri_gr_b2(int gr)
+{
+    int nt = database_n_ap_gr(gr);
+    float nb = nt * ((float)procstud_bursa2 / 100);
+
+    int nb_int;
+    if (nb > (int)nb)
+        nb_int = floor(nb) + 1;
+
+    return std::min(nb_int, nt - database_n_bursieri_gr_b1(gr));
+}
+
+int database_n_bursieri_gr(int gr)
+{
+    return database_n_bursieri_gr_b1(gr) + database_n_bursieri_gr_b2(gr);
+}
+
 void database_cat_name(int i, char c[])
 {
     strcpy(c, studenti[i].nume);
@@ -171,6 +201,110 @@ void database_sort_alf()
         }
 
         studenti[j + 1] = aux;
+    }
+}
+
+void database_sort_medie_ij(int i, int j)
+{
+    int k, l;
+    for (k = i; k <= j; k++)
+    {
+        struct student aux = studenti[k];
+        l = k - 1;
+
+        while (l >= i &&
+               ((int)(studenti[l].medie * 100) < (int)(aux.medie * 100)))
+        {
+            studenti[l + 1] = studenti[l];
+            l--;
+        }
+
+        studenti[l + 1] = aux;
+    }
+}
+
+void database_sort_medie()
+{
+    database_sort_medie_ij(1, database_length);
+}
+
+/*
+void database_sort_medie()
+{
+    int i, j;
+
+    for (i = 2; i <= database_length; i++)
+    {
+        struct student aux = studenti[i];
+        j = i - 1;
+
+        while (j >= 1 &&
+               ((int)(studenti[j].medie * 100) > (int)(aux.medie * 100)))
+        {
+            studenti[j + 1] = studenti[j];
+            j--;
+        }
+
+        studenti[j + 1] = aux;
+    }
+}
+*/
+
+void database_sort_gr()
+{
+    int i, j;
+
+    for (i = 2; i <= database_length; i++)
+    {
+        struct student aux = studenti[i];
+        j = i - 1;
+
+        while (j >= 1 && studenti[j].grupa > aux.grupa)
+        {
+            studenti[j + 1] = studenti[j];
+            j--;
+        }
+
+        studenti[j + 1] = aux;
+    }
+}
+
+void database_sort_gr_medie()
+{
+    database_sort_gr();
+
+    int aux = 1, i = 1, j = i;
+    while (j < database_length)
+    {
+        j = i;
+        while (studenti[i].grupa == studenti[j + 1].grupa)
+            j++;
+
+        database_sort_medie_ij(i, j);
+
+        i = j + 1;
+    }
+}
+
+void database_update_bursieri()
+{
+    database_sort_gr_medie();
+
+    int i = 1, aux = 0;
+    while (i <= database_length)
+    {
+        int nb1, nb2;
+        if (studenti[i].grupa != aux)
+        {
+            nb1 = database_n_bursieri_gr_b1(studenti[i].grupa), nb2 = database_n_bursieri_gr_b2(studenti[i].grupa), aux = studenti[i].grupa;
+
+            for (int j = 0; j < nb1; j++)
+                studenti[i + j].val_bursa = val_bursa1;
+
+            for (int j = nb1; j < nb1 + nb2; j++)
+                studenti[i + j].val_bursa = val_bursa2;
+        }
+        i++;
     }
 }
 
