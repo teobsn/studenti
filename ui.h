@@ -1,6 +1,14 @@
 #include "define.h"
-#include <ncurses.h>
 #include <cstring>
+
+#ifdef __unix__
+#include <ncurses.h>
+#endif
+
+#ifdef _WIN32
+#include <curses.h>
+#include <cstdint>
+#endif
 
 char ui_about_1[][ui_maxlength] = {
     "Andrei Angelo-Iustin",

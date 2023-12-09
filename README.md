@@ -5,24 +5,35 @@
 - Teo
 # Detalii proiect
 
-### Compatibilitate
-- Programul nu se folosește de librării externe sau de funcții/subprograme ce funcționează doar pe anumite platforme. Așadar, acesta poate fi compilat pe orice platformă care dispune de compilatorul GNU/G++ sau Clang (LLVM) și de librăria `ncurses`
-- Compilarea programului se poate face cu ajutorul următoarelor comenzi in terminal, în funcție de platformă:
+### Compatibilitate/Compilare
+Programul nu se folosește de librării externe sau de funcții/subprograme ce funcționează doar pe anumite platforme. Așadar, acesta poate fi compilat pe orice platformă care dispune de compilatorul GNU/G++ sau Clang (LLVM) și de librăria `ncurses`.
+Compilarea programului se poate face cu ajutorul următoarelor comenzi in terminal, în funcție de platformă:
 
 |Platformă Compilator|Platformă Executabil|Compilator|Comandă|
 |---|---|---|---|
 |Linux x64|Linux x64|GNU/G++|`g++ -lncurses main.cpp -o studenti`|
 |Linux x64|Linux x64|Clang|`clang++ -lncurses main.cpp -o studenti`|
-|Linux x64|Windows x64|GNU/G++ MinGW64|`x86_64-w64-mingw32-g++ main.cpp -o studenti.exe -static`|
-|Windows x64|Windows x64|GNU/G++ MinGW64|nu stiu|
-|macOS x64|macOS x64|Clang|nu stiu|
-- În cazul în care librăria `ncurses` nu este deja instalată, instalarea ei se poate realiza cu ajutorul următorului ghid: https://web.archive.org/web/20230801164341/https://e-l.unifi.it/pluginfile.php/805205/mod_resource/content/0/ncurses%20installation%20-%20en.pdf
+|Windows x64|Windows x64|GNU/G++ MinGW-w64|`g++ -I/mingw64/include/ncurses -o studenti.exe main.cpp -lncurses -L/mingw64/bin -static`|
+|macOS x64|macOS x64|Clang|`clang++ -lncurses main.cpp -o studenti`|
+În cazul în care librăria `ncurses` nu este deja instalată, instalarea ei se poate realiza cu ajutorul următoarelor ghiduri, în funcție de sistemul de operare folosit: 
+- Windows:
+Compilatorul `mingw-w64` poate fi instalat utilizând următorul ghid: https://code.visualstudio.com/docs/cpp/config-mingw
+Trebuie instalate și următoarele pachete:
+`pacman -S mingw-w64-x86_64-toolchain mingw-w64-ucrt-x86_64-ncurses mingw-w64-x86_64-ncurses``
+
+- Linux: 
+Ubuntu/Debian/Debian-based (apt) sau Fedora, CentOS (yum): https://www.cyberciti.biz/faq/linux-install-ncurses-library-headers-on-debian-ubuntu-centos-fedora/
+Gentoo: `emerge sys-libs/ncurses`
+Arch/Arch-based: `pacman -S ncurses`
+
+- macOS: `xcode-select --install`
+
 ### Utilizarea macrourilor #define
-- Multe valori ale lungimilor/mărimilor șirurilor de caractere sau a altor date/structuri/variabile care au fost alese în mod arbitrar sunt definite în fișierul `define.h`, pentru a putea fi modificate rapid în cazul în care acest lucru este necesar.
-- Folosirea unui vector de tipul `std::vector` ar putea elimina necesitatea definirii mărimilor anumitor date, întrucât acesta poate să își modifice mărimea dinamic.
+Multe valori ale lungimilor/mărimilor șirurilor de caractere sau a altor date/structuri/variabile care au fost alese în mod arbitrar sunt definite în fișierul `define.h`, pentru a putea fi modificate rapid în cazul în care acest lucru este necesar.
+Folosirea unui vector de tipul `std::vector` ar putea elimina necesitatea definirii mărimilor anumitor date, întrucât acesta poate să își modifice mărimea dinamic.
 ### Structura programului
-- Majoritatea, dacă nu toate subprogramele de care se folosește programul sunt definite în fișiere separate de `main.cpp`
-- Numele fișierelor reprezintă categoria din care fac parte subprogramele definite în acesta:
+Majoritatea, dacă nu toate subprogramele de care se folosește programul sunt definite în fișiere separate de `main.cpp`
+Numele fișierelor reprezintă categoria din care fac parte subprogramele definite în acesta:
 
 |Categorie|Fisier|Descriere|
 |---|---|---|
@@ -50,9 +61,9 @@ struct student
 } studenti[database_size];
 ```
 ### Fișier bază de date
-- Programul se folosește de o bază de date (`database.csv`) în format CSV (Comma-Separated Values). Acest format permite editarea cu ajutorul oricărui program de calcul tabelar (Microsoft Excel, Google Sheets, OnlyOffice Spreadsheet Editor, etc.), dar poate fi editat cu ușurință și cu orice editor de text (Notepad, Notepad++, gedit, etc.). De asemenea, formatul poate fi citit de program fără a se folosi de funcții/subprograme complexe.
-- În fișierul bazei de date, fiecare linie corespunde unui student, iar parametrii (delimitați de virgulă '`,`') corespund fiecare unei variabile din structura de date.
-- Fișierul bazei de date este generat automat dacă nu există deja în folderul (directorul) programului și are următorul conținut implicit:
+Programul se folosește de o bază de date (`database.csv`) în format CSV (Comma-Separated Values). Acest format permite editarea cu ajutorul oricărui program de calcul tabelar (Microsoft Excel, Google Sheets, OnlyOffice Spreadsheet Editor, etc.), dar poate fi editat cu ușurință și cu orice editor de text (Notepad, Notepad++, gedit, etc.). De asemenea, formatul poate fi citit de program fără a se folosi de funcții/subprograme complexe.
+În fișierul bazei de date, fiecare linie corespunde unui student, iar parametrii (delimitați de virgulă '`,`') corespund fiecare unei variabile din structura de date.
+Fișierul bazei de date este generat automat dacă nu există deja în folderul (directorul) programului și are următorul conținut implicit:
 
 |COD|NUME         |PRENUME   |AN_NASTERE|LUNA_NASTERE|ZI_NASTERE|GRUPA|MEDIE|VAL_BURSA|
 |---|-------------|----------|----------|-----------:|---------:|----:|----:|---------|
@@ -83,11 +94,11 @@ struct student
 |25 |David        |Vulcan    |2003      |7           |31        |3    |8.50 |0        |
 |26 |Madalina     |Bucsa     |1999      |3           |30        |3    |8.41 |0        |
 |27 |Marta        |Ceausescu |2000      |2           |21        |2    |9.41 |0        |
-- Numele și prenumele bazei de date implicite au fost generate cu ajutorul https://www.fantasynamegenerators.com/romanian-names.php și nu intenționează să descrie sau reprezinte nume reale.
+Numele și prenumele bazei de date implicite au fost generate cu ajutorul https://www.fantasynamegenerators.com/romanian-names.php și nu intenționează să descrie sau reprezinte nume reale.
 ### Fișier configurare
-- Programul se folosește de un fișier de configurare (`settings.ini`). Acesta conține parametri ce pot fi modificați după cerințele utilizatorului.
-- Fișierul de configurare este generat automat dacă nu există deja în folderul (directorul) programului și are ca valori implicite valorile cerinței problemei.
-- Programul analizează valorile fișierului de configurare și, la pornire, va afișa erori dacă acesta conține parametrii nedefiniți, dacă valorile anumitor parametri nu au sens (de exemplu, suma procentuală de studenți ce primesc bursă nu poate depăși `100%`). De asemenea, programul va afișa eroare pentru fiecare parametru lipsă.
+Programul se folosește de un fișier de configurare (`settings.ini`). Acesta conține parametri ce pot fi modificați după cerințele utilizatorului.
+Fișierul de configurare este generat automat dacă nu există deja în folderul (directorul) programului și are ca valori implicite valorile cerinței problemei.
+Programul analizează valorile fișierului de configurare și, la pornire, va afișa erori dacă acesta conține parametrii nedefiniți, dacă valorile anumitor parametri nu au sens (de exemplu, suma procentuală de studenți ce primesc bursă nu poate depăși `100%`). De asemenea, programul va afișa eroare pentru fiecare parametru lipsă.
 ##### Listă parametri:
 |Parametru|Valoare implicită|Descriere|
 |---|--:|---|
@@ -96,3 +107,9 @@ struct student
 |procstud_bursa1|20|Procentajul de studenți ce vor primi prima bursă|
 |procstud_bursa2|30|Procentajul de studenți ce vor cea de a doua bursă|
 |medie_min|5|Media minimă pentru a promova|
+
+### Interfața programului
+Programul se folosește de librăria `ncurses` pentru afișarea interfaței. Librăria `ncurses` oferă diverse funcții/subprograme ce sunt folositoare pentru a formata textul afișat pe ecran și pentru a modifica parametrii terminalului fără folosirea unor interfațe de programare existente doar pe anumite platforme (Win32 API, Cocoa, etc.).
+Interfața programului încearcă să fie cât mai accesibilă tuturor utilizatorilor, dar în același timp să fie cât mai versatilă. Pentru a realiza acest lucru, interfața se folosește de diferite caracteristici întâlnite deja în alte programe, precum căutarea în timp real în baza de date sau navigare în meniu cu ajutorul tastelor săgeți.
+Elementele meniului principal pot fi accesate apăsând inițialele textului din lista (de exemplu, pentru a accesa setările, utilizatorul poate apăsa tasta `S`).
+Interfața programului este centrată automat în terminal și se folosește de întreg spațiul terminalului.

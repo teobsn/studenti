@@ -8,7 +8,15 @@
 #include <utility>
 
 // Ncurses
+#ifdef __unix__
 #include <ncurses.h>
+#endif
+
+#ifdef _WIN32
+#include <curses.h>
+#include <cstdint>
+#endif
+
 
 // Fisiere subprograme
 #include "ui.h"
