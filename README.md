@@ -19,15 +19,20 @@ Compilarea programului se poate face cu ajutorul următoarelor comenzi in termin
 În cazul în care librăria `ncurses` nu este deja instalată, instalarea ei se poate realiza cu ajutorul următoarelor ghiduri, în funcție de sistemul de operare folosit: 
 - Windows:
 
-Compilatorul `mingw-w64` poate fi instalat utilizând următorul ghid: https://code.visualstudio.com/docs/cpp/config-mingw
+Compilatorul `mingw-w64` poate fi instalat utilizând următorul ghid: https://code.visualstudio.com/docs/cpp/config-mingw .
+
 Trebuie instalate și următoarele pachete:
 `pacman -S mingw-w64-x86_64-toolchain mingw-w64-ucrt-x86_64-ncurses mingw-w64-x86_64-ncurses``
+
 
 - Linux: 
 
 Ubuntu/Debian/Debian-based (apt) sau Fedora, CentOS (yum): https://www.cyberciti.biz/faq/linux-install-ncurses-library-headers-on-debian-ubuntu-centos-fedora/
+
 Gentoo: `emerge sys-libs/ncurses`
+
 Arch/Arch-based: `pacman -S ncurses`
+
 
 - macOS: `xcode-select --install`
 
