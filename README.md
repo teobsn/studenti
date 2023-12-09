@@ -73,35 +73,36 @@ Programul se folosește de o bază de date (`database.csv`) în format CSV (Comm
 În fișierul bazei de date, fiecare linie corespunde unui student, iar parametrii (delimitați de virgulă '`,`') corespund fiecare unei variabile din structura de date.
 Fișierul bazei de date este generat automat dacă nu există deja în folderul (directorul) programului și are următorul conținut implicit:
 
-|COD|NUME         |PRENUME   |AN_NASTERE|LUNA_NASTERE|ZI_NASTERE|GRUPA|MEDIE|VAL_BURSA|
-|---|-------------|----------|----------|-----------:|---------:|----:|----:|---------|
-|1  |Daniel       |Corbeanu  |2003      |10          |20        |1    |8.32 |0        |
-|2  |Costin       |Plesu     |2004      |5           |19        |1    |7.12 |0        |
-|3  |Andrei       |Bogza     |2000      |3           |32        |2    |9.23 |0        |
-|4  |Valentin     |Ionescu   |1999      |7           |22        |2    |9.41 |0        |
-|5  |Dana         |Minea     |2002      |6           |13        |2    |8.71 |0        |
-|6  |Ruxandra     |Tomsa     |2003      |2           |7         |3    |9.21 |0        |
-|7  |Paula Ilinca |Răducanu  |2001      |7           |12        |3    |7.65 |0        |
-|8  |Izabela      |Anghelescu|2002      |12          |21        |2    |6.20 |0        |
-|9  |Alex         |Mica      |2000      |1           |30        |2    |8.11 |0        |
-|10 |Stefan       |Stancu    |2006      |1           |1         |1    |9.89 |0        |
-|11 |Catalin      |Codreanu  |2005      |1           |14        |2    |5.98 |0        |
-|12 |Andrei-Teodor|Tiberiu   |2004      |2           |4         |3    |6.23 |0        |
-|13 |Calin Marius |Lupescu   |2000      |5           |8         |2    |8.31 |0        |
-|14 |Filip        |Andrei    |2001      |1           |3         |3    |7.12 |0        |
-|15 |Petru        |Stefan    |2003      |8           |21        |2    |6.98 |0        |
-|16 |Ioana        |Dragomir  |2002      |4           |5         |2    |8.98 |0        |
-|17 |Rebeca       |Sandulescu|1999      |7           |16        |1    |9.02 |0        |
-|18 |Sergiu       |Grul      |2004      |4           |13        |2    |9.21 |0        |
-|19 |Viorel       |Creanga   |1998      |2           |1         |3    |8.51 |0        |
-|20 |Marius       |Popa      |2002      |7           |23        |2    |8.21 |0        |
-|21 |Toma         |Balan     |2001      |3           |4         |1    |4.90 |0        |
-|22 |Alin         |Draghici  |2000      |2           |2         |1    |5.30 |0        |
-|23 |Matei        |Petrescu  |2002      |1           |6         |1    |9.91 |0        |
-|24 |Constantin   |Morosanu  |2004      |2           |9         |2    |7.65 |0        |
-|25 |David        |Vulcan    |2003      |7           |31        |3    |8.50 |0        |
-|26 |Madalina     |Bucsa     |1999      |3           |30        |3    |8.41 |0        |
-|27 |Marta        |Ceausescu |2000      |2           |21        |2    |9.41 |0        |
+|COD|NUME      |PRENUME      |AN_NASTERE|LUNA_NASTERE|ZI_NASTERE|GRUPA|MEDIE|VAL_BURSA|
+|--:|----------|-------------|---------:|-----------:|---------:|----:|----:|---------|
+|1  |Corbeanu  |Daniel       |2003      |10          |20        |1    |8.32 |500      |
+|2  |Plesu     |Costin       |2004      |5           |19        |1    |7.12 |500      |
+|3  |Bogza     |Andrei       |2000      |3           |32        |2    |9.23 |700      |
+|4  |Ionescu   |Valentin     |1999      |7           |22        |2    |9.41 |700      |
+|5  |Minea     |Dana         |2002      |6           |13        |2    |8.71 |500      |
+|6  |Tomsa     |Ruxandra     |2003      |2           |7         |3    |9.21 |700      |
+|7  |Răducanu  |Paula Ilinca |2001      |7           |12        |3    |7.65 |500      |
+|8  |Anghelescu|Izabela      |2002      |12          |21        |2    |6.20 |0        |
+|9  |Mica      |Alex         |2000      |1           |30        |2    |8.11 |0        |
+|10 |Stancu    |Stefan       |2006      |1           |1         |1    |9.89 |700      |
+|11 |Codreanu  |Catalin      |2005      |1           |14        |2    |5.98 |0        |
+|12 |Tiberiu   |Andrei-Teodor|2004      |2           |4         |3    |6.23 |0        |
+|13 |Lupescu   |Calin Marius |2000      |5           |8         |2    |8.31 |500      |
+|14 |Andrei    |Filip        |2001      |1           |3         |3    |7.12 |0        |
+|15 |Stefan    |Petru        |2003      |8           |21        |2    |6.98 |0        |
+|16 |Dragomir  |Ioana        |2002      |4           |5         |2    |8.98 |500      |
+|17 |Sandulescu|Rebeca       |1999      |7           |16        |1    |9.02 |500      |
+|18 |Grul      |Sergiu       |2004      |4           |13        |2    |9.21 |500      |
+|19 |Creanga   |Viorel       |1998      |2           |1         |3    |8.51 |700      |
+|20 |Popa      |Marius       |2002      |7           |23        |2    |8.21 |0        |
+|21 |Balan     |Toma         |2001      |3           |4         |1    |4.90 |0        |
+|22 |Draghici  |Alin         |2000      |2           |2         |1    |5.30 |0        |
+|23 |Petrescu  |Matei        |2002      |1           |6         |1    |9.91 |700      |
+|24 |Morosanu  |Constantin   |2004      |2           |9         |2    |7.65 |0        |
+|25 |Vulcan    |David        |2003      |7           |31        |3    |8.50 |500      |
+|26 |Bucsa     |Madalina     |1999      |3           |30        |3    |8.41 |500      |
+|27 |Ceausescu |Marta        |2000      |2           |21        |2    |9.41 |700      |
+
 
 Numele și prenumele bazei de date implicite au fost generate cu ajutorul https://www.fantasynamegenerators.com/romanian-names.php și nu intenționează să descrie sau reprezinte nume reale.
 ### Fișier configurare
