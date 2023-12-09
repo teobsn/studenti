@@ -102,6 +102,7 @@ Fișierul bazei de date este generat automat dacă nu există deja în folderul 
 |25 |David        |Vulcan    |2003      |7           |31        |3    |8.50 |0        |
 |26 |Madalina     |Bucsa     |1999      |3           |30        |3    |8.41 |0        |
 |27 |Marta        |Ceausescu |2000      |2           |21        |2    |9.41 |0        |
+
 Numele și prenumele bazei de date implicite au fost generate cu ajutorul https://www.fantasynamegenerators.com/romanian-names.php și nu intenționează să descrie sau reprezinte nume reale.
 ### Fișier configurare
 Programul se folosește de un fișier de configurare (`settings.ini`). Acesta conține parametri ce pot fi modificați după cerințele utilizatorului.
