@@ -74,7 +74,7 @@ Programul se folosește de o bază de date (`database.csv`) în format CSV (Comm
 Fișierul bazei de date este generat automat dacă nu există deja în folderul (directorul) programului și are următorul conținut implicit:
 
 |COD|NUME      |PRENUME      |AN_NASTERE|LUNA_NASTERE|ZI_NASTERE|GRUPA|MEDIE|VAL_BURSA|
-|--:|----------|-------------|---------:|-----------:|---------:|----:|----:|---------|
+|--:|----------|-------------|---------:|-----------:|---------:|----:|----:|--------:|
 |1  |Corbeanu  |Daniel       |2003      |10          |20        |1    |8.32 |500      |
 |2  |Plesu     |Costin       |2004      |5           |19        |1    |7.12 |500      |
 |3  |Bogza     |Andrei       |2000      |3           |32        |2    |9.23 |700      |
