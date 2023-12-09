@@ -22,7 +22,7 @@ Compilarea programului se poate face cu ajutorul următoarelor comenzi in termin
 Compilatorul `mingw-w64` poate fi instalat utilizând următorul ghid: https://code.visualstudio.com/docs/cpp/config-mingw .
 
 Trebuie instalate și următoarele pachete:
-`pacman -S mingw-w64-x86_64-toolchain mingw-w64-ucrt-x86_64-ncurses mingw-w64-x86_64-ncurses``
+`pacman -S mingw-w64-x86_64-toolchain mingw-w64-ucrt-x86_64-ncurses mingw-w64-x86_64-ncurses`
 
 
 - Linux: 
