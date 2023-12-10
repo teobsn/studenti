@@ -137,8 +137,9 @@ void ui_draw_database()
     mvaddstr(7, w2x0 + 4, "Medie (desc)");
     mvaddstr(8, w2x0 + 4, "Grupa + Medie");
 
-        mvaddstr(10, w2x0 + 2, "Bursier:");
+    mvaddstr(10, w2x0 + 2, "Bursier:");
     mvaddstr(11, w2x0 + 2, "Grupa:");
+    mvaddstr(12, w2x0 + 2, "Promovat:");
 
     // Indicatii taste
     mvaddstr(LINES - 1, 0, "ESC=Iesire   ");
@@ -158,6 +159,13 @@ void ui_draw_database()
     int set_grupa = 0;
     char set_grupa_aux[] = "-";
     mvaddstr(11, COLS - 2 - strlen(set_grupa_aux), set_grupa_aux);
+
+    int set_promovare = 0;
+    // 0 = -
+    // 1 = nu
+    // 2 = da
+    char set_promovare_aux[] = "-";
+    mvaddstr(12, COLS - 3, set_promovare_aux);
 
     // Loop
     refresh();
@@ -342,7 +350,7 @@ void ui_start()
 
         init_pair(1, COLOR_GREEN, -1);
         init_pair(2, COLOR_CYAN, -1);
-        init_pair(3, COLOR_RED, -1);
+        init_pair(3, COLOR_MAGENTA, -1);
         init_pair(4, COLOR_BLUE, -1);
     }
     raw();
