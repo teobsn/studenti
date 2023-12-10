@@ -136,7 +136,7 @@ void ui_draw_about()
 
     mvaddstr(LINES / 2 + k - 1, COLS / 2 - strlen("Proiect realizat de:") / 2, "Proiect realizat de:");
 
-    move(0, 0);
+    move(LINES - 1, COLS - 1);
 
     refresh();
 

@@ -89,7 +89,7 @@ void ui_draw_database()
     // Intreg terminalul
     for (int i = 1; i < LINES - 2; i++)
         mvaddstr(i, 0, ui_symb_line_v);
-    
+
     for (int i = 1; i < COLS - 1; i++)
         mvaddstr(0, i, ui_symb_line_h);
 
@@ -102,16 +102,15 @@ void ui_draw_database()
     for (int i = 1; i < COLS - 1; i++)
         mvaddstr(2, i, ui_symb_line_h);
 
-
     mvaddstr(0, 0, ui_symb_line_dr);
     mvaddstr(0, COLS - 1, ui_symb_line_dl);
-    
+
     mvaddstr(LINES - 2, COLS - 1, ui_symb_line_ul);
     mvaddstr(LINES - 2, 0, ui_symb_line_ur);
 
     mvaddstr(2, 0, ui_symb_line_vr);
     mvaddstr(2, COLS - 1, ui_symb_line_dl);
-    
+
     // Fereastra principala
 
     mvaddstr(1, 2, "Lista Studenti");
@@ -141,8 +140,14 @@ void ui_draw_database()
     mvaddstr(11, w2x0 + 2, "Grupa:");
     mvaddstr(12, w2x0 + 2, "Promovat:");
 
+    // Fereastra cautare
+    for (int i = 1; i < w2x0; i++)
+        mvaddstr(4, i, ui_symb_line_h);
+    mvaddstr(3, 2, "Cautare:");
+
     // Indicatii taste
-    mvaddstr(LINES - 1, 0, "ESC=Iesire   ");
+    char aux_indicatii[] = "ESC=Iesire   A=Adaugare   D=Stergere   C=Cautare   S=Sortare   B=Bursier   G=Grupa   P=Promovat";
+    mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
 
     // Optiuni
     int set_sortare = 1;
@@ -153,8 +158,12 @@ void ui_draw_database()
     // 4: Grupa + Medie
     mvaddstr(4 + set_sortare, w2x0 + 2, "*");
 
-    bool set_bursier = false;
-    mvaddstr(10, COLS - 3, set_bursier ? "D" : "N");
+    int set_bursier = 0;
+    // 0 = -
+    // 1 = nu
+    // 2 = da
+    char set_bursier_aux[] = "-";
+    mvaddstr(10, COLS - 3, set_bursier_aux);
 
     int set_grupa = 0;
     char set_grupa_aux[] = "-";
@@ -167,15 +176,137 @@ void ui_draw_database()
     char set_promovare_aux[] = "-";
     mvaddstr(12, COLS - 3, set_promovare_aux);
 
-    // Loop
     refresh();
+
+    int oy = 5, ox = 1, height = LINES - 7;
+    int y = oy;
+
+    move(y, ox);
 
     bool run = true;
     while (run)
     {
         int key = getch();
-        if ((key == controls_enter) || (key == controls_enter_2) || (key == controls_esc))
+        switch (key)
+        {
+        case controls_arr_down:
+            y = std::min(y + 1, oy + height - 1);
+            move(y, ox);
+            break;
+        case controls_arr_up:
+            y = std::max(y - 1, oy);
+            move(y, ox);
+            break;
+
+        case controls_backsp:
+        case controls_backsp_2:
+            break;
+
+        case controls_esc:
             run = false;
+            break;
+
+        case controls_enter:
+        case controls_enter_2:
+            break;
+
+        case 99: // C
+            break;
+
+        case 115: // S
+            mvaddstr(4 + set_sortare, w2x0 + 2, " ");
+            set_sortare++;
+            set_sortare %= 5;
+            mvaddstr(4 + set_sortare, w2x0 + 2, "*");
+            break;
+
+        case 98: // B
+            set_bursier++;
+            set_bursier %= 3;
+            switch (set_bursier)
+            {
+            case 0:
+                strcpy(set_bursier_aux, "-");
+                break;
+            case 1:
+                strcpy(set_bursier_aux, "N");
+                break;
+            case 2:
+                strcpy(set_bursier_aux, "D");
+                break;
+            }
+            mvaddstr(10, COLS - 3, set_bursier_aux);
+            break;
+
+        case 112: // P
+            set_promovare++;
+            set_promovare %= 3;
+            switch (set_promovare)
+            {
+            case 0:
+                strcpy(set_promovare_aux, "-");
+                break;
+            case 1:
+                strcpy(set_promovare_aux, "N");
+                break;
+            case 2:
+                strcpy(set_promovare_aux, "D");
+                break;
+            }
+            mvaddstr(12, COLS - 3, set_promovare_aux);
+            break;
+
+        case 100: // D
+
+            break;
+
+        case 97: // A
+
+            break;
+
+        case 103: // G
+            move(11, COLS - 2);
+            bool run_aux = true;
+            while (run_aux)
+            {
+                int key = getch();
+                switch (key)
+                {
+                case controls_enter:
+                case controls_enter_2:
+                case controls_esc:
+                    run_aux = false;
+                    break;
+
+                case controls_backsp:
+                case controls_backsp_2:
+                    set_grupa /= 10;
+                    if(set_grupa)
+                        itoa(set_grupa, set_grupa_aux, 10);
+                    else
+                        strcpy(set_grupa_aux, "-");
+                    break;
+                
+
+                default:
+                    if (48 <= key && key <= 57)
+                    {
+                        if (set_grupa <= INT32_MAX / 100)
+                        {
+                            set_grupa *= 10;
+                            if (key != 48)
+                                set_grupa += key - 48;
+                        }
+                        itoa(set_grupa, set_grupa_aux, 10);
+                    }
+                    break;
+                }
+                mvaddstr(11, w2x0 + 2 + strlen("Grupa:"), "         ");
+                mvaddstr(11, COLS - 2 - strlen(set_grupa_aux), set_grupa_aux);
+            }
+            move(y, ox);
+            break;
+        }
     }
 }
 

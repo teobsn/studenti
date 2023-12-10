@@ -1,5 +1,3 @@
-// scris de: Teo
-
 #include <cstring>
 #include <fstream>
 #include "define.h"
