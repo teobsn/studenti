@@ -21,6 +21,21 @@
 
 #define ui_symb_selector ">"
 
+// https://en.wikipedia.org/wiki/Box-drawing_character
+#define ui_symb_line_v "|"
+#define ui_symb_line_h "-"
+#define ui_symb_line_ul "+"
+#define ui_symb_line_ur "+"
+#define ui_symb_line_dl "+"
+#define ui_symb_line_dr "+"
+
+#define ui_symb_line_vl "+"
+#define ui_symb_line_vr "+"
+#define ui_symb_line_hu "+"
+#define ui_symb_line_hd "+"
+
+#define ui_symb_corner "+"
+
 // Keybinds
 #define controls_arr_left KEY_LEFT
 #define controls_arr_right KEY_RIGHT

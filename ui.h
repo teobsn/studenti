@@ -38,7 +38,7 @@ int ncif(int x)
 }
 
 char* itoa(int value, char* result, int base) { // https://stackoverflow.com/questions/8257714/how-can-i-convert-an-int-to-a-string-in-c
-    // check that the base if valid
+    // check that the base is valid
     if (base < 2 || base > 36) { *result = '\0'; return result; }
 
     char* ptr = result, *ptr1 = result, tmp_char;

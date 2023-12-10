@@ -18,21 +18,157 @@
 #endif
 
 // Fisiere subprograme
-#include "ui.h"
-#include "settings.h"
-#include "firstrun.h"
 #include "database.h"
+#include "define.h"
+#include "firstrun.h"
 #include "search.h"
+#include "settings.h"
+#include "ui.h"
 
 bool ui_exit = false;
 
-// Subprograme intefata
+// Subprograme baza de date
+
+int database_n_bursieri_gr_b1(int gr)
+{
+    int nt = database_n_ap_gr(gr);
+    float nb = nt * ((float)procstud_bursa1 / 100);
+
+    int nb_int;
+    if (nb > (int)nb)
+        nb_int = floor(nb) + 1;
+
+    return nb_int;
+}
+
+int database_n_bursieri_gr_b2(int gr)
+{
+    int nt = database_n_ap_gr(gr);
+    float nb = nt * ((float)procstud_bursa2 / 100);
+
+    int nb_int;
+    if (nb > (int)nb)
+        nb_int = floor(nb) + 1;
+
+    return std::min(nb_int, nt - database_n_bursieri_gr_b1(gr));
+}
+
+int database_n_bursieri_gr(int gr)
+{
+    return database_n_bursieri_gr_b1(gr) + database_n_bursieri_gr_b2(gr);
+}
+
+void database_update_bursieri()
+{
+    database_sort_gr_medie();
+
+    int i = 1, aux = 0;
+    while (i <= database_length)
+    {
+        int nb1, nb2;
+        if (studenti[i].grupa != aux)
+        {
+            nb1 = database_n_bursieri_gr_b1(studenti[i].grupa), nb2 = database_n_bursieri_gr_b2(studenti[i].grupa), aux = studenti[i].grupa;
+
+            for (int j = 0; j < nb1; j++)
+                studenti[i + j].val_bursa = val_bursa1;
+
+            for (int j = nb1; j < nb1 + nb2; j++)
+                studenti[i + j].val_bursa = val_bursa2;
+        }
+        i++;
+    }
+}
+
+// Subprograme interfata
 
 void ui_draw_database()
 {
     clear();
-    int k = -1;
 
+    // Intreg terminalul
+    for (int i = 1; i < LINES - 2; i++)
+        mvaddstr(i, 0, ui_symb_line_v);
+    
+    for (int i = 1; i < COLS - 1; i++)
+        mvaddstr(0, i, ui_symb_line_h);
+
+    for (int i = 1; i < LINES - 2; i++)
+        mvaddstr(i, COLS - 1, ui_symb_line_v);
+
+    for (int i = 1; i < COLS - 1; i++)
+        mvaddstr(LINES - 2, i, ui_symb_line_h);
+
+    for (int i = 1; i < COLS - 1; i++)
+        mvaddstr(2, i, ui_symb_line_h);
+
+
+    mvaddstr(0, 0, ui_symb_line_dr);
+    mvaddstr(0, COLS - 1, ui_symb_line_dl);
+    
+    mvaddstr(LINES - 2, COLS - 1, ui_symb_line_ul);
+    mvaddstr(LINES - 2, 0, ui_symb_line_ur);
+
+    mvaddstr(2, 0, ui_symb_line_vr);
+    mvaddstr(2, COLS - 1, ui_symb_line_dl);
+    
+    // Fereastra principala
+
+    mvaddstr(1, 2, "Lista Studenti");
+
+    // Fereastra secundara
+    int w2_width = 17;
+    int w2x0 = COLS - w2_width - 2;
+
+    for (int i = 1; i < LINES - 2; i++)
+        mvaddstr(i, w2x0, ui_symb_line_v);
+
+    mvaddstr(0, w2x0, ui_symb_line_hd);
+    mvaddstr(2, w2x0, ui_symb_line_hd);
+
+    mvaddstr(LINES - 2, w2x0, ui_symb_line_ul);
+
+    mvaddstr(1, w2x0 + 2, "Optiuni");
+
+    mvaddstr(3, w2x0 + 2, "Sortare:");
+    mvaddstr(4, w2x0 + 4, "Alfabetica");
+    mvaddstr(5, w2x0 + 4, "Cod");
+    mvaddstr(6, w2x0 + 4, "Grupa");
+    mvaddstr(7, w2x0 + 4, "Medie (desc)");
+    mvaddstr(8, w2x0 + 4, "Grupa + Medie");
+
+        mvaddstr(10, w2x0 + 2, "Bursier:");
+    mvaddstr(11, w2x0 + 2, "Grupa:");
+
+    // Indicatii taste
+    mvaddstr(LINES - 1, 0, "ESC=Iesire   ");
+
+    // Optiuni
+    int set_sortare = 1;
+    // 0: Alfabetica
+    // 1: Cod
+    // 2: Grupa
+    // 3: Medie (desc)
+    // 4: Grupa + Medie
+    mvaddstr(4 + set_sortare, w2x0 + 2, "*");
+
+    bool set_bursier = false;
+    mvaddstr(10, COLS - 3, set_bursier ? "D" : "N");
+
+    int set_grupa = 0;
+    char set_grupa_aux[] = "-";
+    mvaddstr(11, COLS - 2 - strlen(set_grupa_aux), set_grupa_aux);
+
+    // Loop
+    refresh();
+
+    bool run = true;
+    while (run)
+    {
+        int key = getch();
+        if ((key == controls_enter) || (key == controls_enter_2) || (key == controls_esc))
+            run = false;
+    }
 }
 
 void ui_draw_settings()
@@ -173,6 +309,7 @@ void ui_draw_mainmenu()
         mvaddstr(LINES / 2 + k + i, COLS / 2 + 1, ui_menu_opts1[i]);
         mvchgat(LINES / 2 + k + i, COLS / 2 + 1, 1, A_UNDERLINE, NULL, NULL);
     }
+    refresh();
     // https://pubs.opengroup.org/onlinepubs/7908799/xcurses/chgat.html
     // https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/attrib.html
 
@@ -196,6 +333,7 @@ void ui_draw_mainmenu()
 
 void ui_start()
 {
+    setlocale(LC_ALL, "");
     initscr();
     if (has_colors())
     {
@@ -243,7 +381,7 @@ int main()
     database_sort_cod();
 
     ui_start();
-    
+
     endwin();
     return 0;
 }
