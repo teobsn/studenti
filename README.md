@@ -11,10 +11,10 @@ Compilarea programului se poate face cu ajutorul următoarelor comenzi in termin
 
 |Platformă Compilator|Platformă Executabil|Compilator|Comandă|
 |---|---|---|---|
-|Linux x64|Linux x64|GNU/G++|`g++ -lncurses main.cpp -o studenti`|
-|Linux x64|Linux x64|Clang|`clang++ -lncurses main.cpp -o studenti`|
-|Windows x64|Windows x64|GNU/G++ MinGW-w64|`g++ -I/mingw64/include/ncurses -o studenti.exe main.cpp -lncurses -L/mingw64/bin -static`|
-|macOS x64|macOS x64|Clang|`clang++ -lncurses main.cpp -o studenti`|
+|Linux x64|Linux x64|GNU/G++|`g++ -lncurses main.cpp -O2 -o studenti`|
+|Linux x64|Linux x64|Clang|`clang++ -lncurses main.cpp -O2 -o studenti`|
+|Windows x64|Windows x64|GNU/G++ MinGW-w64|`g++ -I/mingw64/include/ncurses -o studenti.exe main.cpp -O2 -lncurses -L/mingw64/bin -static`|
+|macOS x64|macOS x64|Clang|`clang++ -lncurses main.cpp -O2 -o studenti`|
 
 În cazul în care librăria `ncurses` nu este deja instalată, instalarea ei se poate realiza cu ajutorul următoarelor ghiduri, în funcție de sistemul de operare folosit: 
 - Windows:
