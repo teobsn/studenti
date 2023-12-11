@@ -80,7 +80,161 @@ void database_update_bursieri()
     }
 }
 
+// Urmatoarele 2 subprograme nu se afla in database.h deoarece se folosesc
+// de variabila "medie_min" care este declarata in settings.h ¯\_(ツ)_/¯
+
+bool database_ver_corigent(int i)
+{
+    return (studenti[i].medie >= medie_min);
+}
+
+int database_n_corigenti()
+{
+    int k = 0;
+    for (int i = 1; i <= database_size; i++)
+        k += database_ver_corigent(i);
+    return k;
+}
+
 // Subprograme interfata
+
+void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, int set_promovare, int height)
+{
+    switch (set_sortare)
+    {
+    case 0:
+        database_sort_alf();
+        break;
+    case 1:
+        database_sort_cod();
+        break;
+    case 2:
+        database_sort_gr();
+        break;
+    case 3:
+        database_sort_medie();
+        break;
+    case 4:
+        database_sort_gr_medie();
+        break;
+    }
+
+    int lmaxcod = 0, lmaxn = 0, lmaxpn = 0, lmaxgrupa = 0, lmaxvalbursa = 0;
+    for (int i = 1; i <= database_length; i++)
+    {
+        lmaxcod = ncif(studenti[i].cod) > lmaxcod ? ncif(studenti[i].cod) : lmaxcod;
+        lmaxn = strlen(studenti[i].nume) > lmaxn ? strlen(studenti[i].nume) : lmaxn;
+        lmaxpn = strlen(studenti[i].prenume) > lmaxn ? strlen(studenti[i].prenume) : lmaxn;
+        lmaxgrupa = ncif(studenti[i].grupa) > lmaxgrupa ? ncif(studenti[i].grupa) : lmaxgrupa;
+        lmaxvalbursa = ncif(studenti[i].val_bursa) > lmaxvalbursa ? ncif(studenti[i].val_bursa) : lmaxvalbursa;
+    }
+
+    int x = 2;
+    mvaddstr(5, x, "Cod");
+    x += (strlen("Cod") > lmaxcod) ? strlen("Cod") : lmaxcod;
+    int xcod = x;
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    int xn = x;
+    mvaddstr(5, x, "Nume");
+    x += (strlen("Nume") > lmaxn + 2) ? strlen("Nume") : lmaxn + 2;
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    int xpn = x;
+    mvaddstr(5, x, "Prenume");
+    x += (strlen("Prenume") > lmaxpn + 2) ? strlen("Prenume") : lmaxpn + 2;
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    int xdn = x;
+    mvaddstr(5, x, "Data nasterii");
+    x += (strlen("Data nasterii") > strlen("YYYY / MM / DD")) ? strlen("Data nasterii") : strlen("YYYY / MM / DD");
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    mvaddstr(5, x, "Grupa");
+    x += (strlen("Grupa") > lmaxgrupa) ? strlen("Grupa") : lmaxgrupa;
+    int xg = x;
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    mvaddstr(5, x, "Medie");
+    x += (strlen("Medie") > strlen("10.00")) ? strlen("Medie") : strlen("10.00");
+    int xm = x;
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    mvaddstr(5, x, "Valoare Bursa");
+    x += (strlen("Valoare Bursa") > lmaxvalbursa) ? strlen("Valoare Bursa") : lmaxvalbursa;
+    int xvb = x;
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    int xprom = x;
+    mvaddstr(5, x, "Promovat");
+    x += strlen("Promovat");
+    x++;
+    mvaddstr(4, x, ui_symb_line_hd);
+    mvaddstr(5, x, ui_symb_line_v);
+    x += 2;
+
+    char aux_cod[4];
+    char aux_dn[strlen("YYYY / MM / DD") + 1], aux_g[ncif(database_ngrupe)], aux_vb[ncif(INT32_MAX) + 1];
+
+    for (int i = 1; i <= std::min(database_length, height); i++)
+    {
+        itoa(studenti[i].cod, aux_cod, 10);
+        mvaddstr(5 + i, xcod - strlen(aux_cod), aux_cod);
+
+        mvaddstr(5 + i, xn, studenti[i].nume);
+        mvaddstr(5 + i, xpn, studenti[i].prenume);
+
+        char aux_dn_y[5], aux_dn_m[3], aux_dn_d[3];
+        itoa(studenti[i].dn.an, aux_dn_y, 10);
+        itoa(studenti[i].dn.luna, aux_dn_m, 10);
+        itoa(studenti[i].dn.zi, aux_dn_d, 10);
+        strcpy(aux_dn, aux_dn_y);
+        strcat(aux_dn, " ");
+        strcat(aux_dn, "/");
+        strcat(aux_dn, " ");
+        if (studenti[i].dn.luna < 10)
+            strcat(aux_dn, " ");
+        strcat(aux_dn, aux_dn_m);
+        strcat(aux_dn, " ");
+        strcat(aux_dn, "/");
+        strcat(aux_dn, " ");
+        if (studenti[i].dn.zi < 10)
+            strcat(aux_dn, " ");
+        strcat(aux_dn, aux_dn_d);
+        mvaddstr(5 + i, xdn, aux_dn);
+
+        itoa(studenti[i].grupa, aux_g, 10);
+        mvaddstr(5 + i, xg - 1, aux_g);
+
+        mvaddstr(5 + i, xm - strlen(ftoa(studenti[i].medie)), ftoa(studenti[i].medie));
+
+        itoa(studenti[i].val_bursa, aux_vb, 10);
+        mvaddstr(5 + i, xvb - strlen(aux_vb), aux_vb);
+
+        mvaddstr(5 + i, xprom, database_ver_corigent(i) ? "Da" : "Nu");
+    }
+}
 
 void ui_draw_database()
 {
@@ -176,10 +330,12 @@ void ui_draw_database()
     char set_promovare_aux[] = "-";
     mvaddstr(12, COLS - 3, set_promovare_aux);
 
-    refresh();
-
-    int oy = 5, ox = 1, height = LINES - 7;
+    int oy = 6, ox = 1, height = LINES - 8;
     int y = oy;
+
+    ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height);
+
+    refresh();
 
     move(y, ox);
 
@@ -281,12 +437,11 @@ void ui_draw_database()
                 case controls_backsp:
                 case controls_backsp_2:
                     set_grupa /= 10;
-                    if(set_grupa)
+                    if (set_grupa)
                         itoa(set_grupa, set_grupa_aux, 10);
                     else
                         strcpy(set_grupa_aux, "-");
                     break;
-                
 
                 default:
                     if (48 <= key && key <= 57)
@@ -493,22 +648,6 @@ void ui_start()
 
     clear();
     refresh();
-}
-
-// Urmatoarele 2 subprograme nu se afla in database.h deoarece se folosesc
-// de variabila "medie_min" care este declarata in settings.h ¯\_(ツ)_/¯
-
-bool database_ver_corigent(int i)
-{
-    return (studenti[i].medie >= medie_min);
-}
-
-int database_n_corigenti()
-{
-    int k = 0;
-    for (int i = 1; i <= database_size; i++)
-        k += database_ver_corigent(i);
-    return k;
 }
 
 int main()

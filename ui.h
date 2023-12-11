@@ -37,30 +37,86 @@ int ncif(int x)
     return n;
 }
 
-char* itoa(int value, char* result, int base) { // https://stackoverflow.com/questions/8257714/how-can-i-convert-an-int-to-a-string-in-c
+char *itoa(int value, char *result, int base)
+{ // https://stackoverflow.com/questions/8257714/how-can-i-convert-an-int-to-a-string-in-c
     // check that the base is valid
-    if (base < 2 || base > 36) { *result = '\0'; return result; }
+    if (base < 2 || base > 36)
+    {
+        *result = '\0';
+        return result;
+    }
 
-    char* ptr = result, *ptr1 = result, tmp_char;
+    char *ptr = result, *ptr1 = result, tmp_char;
     int tmp_value;
 
-    do {
+    do
+    {
         tmp_value = value;
         value /= base;
-        *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * base)];
-    } while ( value );
+        *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[35 + (tmp_value - value * base)];
+    } while (value);
 
     // Apply negative sign
-    if (tmp_value < 0) *ptr++ = '-';
+    if (tmp_value < 0)
+        *ptr++ = '-';
     *ptr-- = '\0';
-  
+
     // Reverse the string
-    while(ptr1 < ptr) {
+    while (ptr1 < ptr)
+    {
         tmp_char = *ptr;
-        *ptr--= *ptr1;
+        *ptr-- = *ptr1;
         *ptr1++ = tmp_char;
     }
     return result;
+}
+
+char *ftoa(float num) // https://stackoverflow.com/questions/2302969/convert-a-float-to-a-string
+{
+    int whole_part = num;
+    int digit = 0, reminder = 0;
+    int log_value = log10(num), index = log_value;
+    long wt = 0;
+
+    // String containg result
+    char *str = new char[20];
+
+    // Initilise stirng to zero
+    memset(str, 0, 20);
+
+    // Extract the whole part from float num
+    for (int i = 1; i < log_value + 2; i++)
+    {
+        wt = pow(10.0, i);
+        reminder = whole_part % wt;
+        digit = (reminder - digit) / (wt / 10);
+
+        // Store digit in string
+        str[index--] = digit + 48; // ASCII value of digit  = digit + 48
+        if (index == -1)
+            break;
+    }
+
+    index = log_value + 1;
+    str[index] = '.';
+
+    float fraction_part = num - whole_part;
+    float tmp1 = fraction_part, tmp = 0;
+
+    const int PRECISION = 3;
+    // Extract the fraction part from  num
+    for (int i = 1; i < PRECISION; i++)
+    {
+        wt = 10;
+        tmp = tmp1 * wt;
+        digit = tmp;
+
+        // Store digit in string
+        str[++index] = digit + 48; // ASCII value of digit  = digit + 48
+        tmp1 = tmp - digit;
+    }
+
+    return str;
 }
 
 int ui_input_arrowmenu1(int height, int oy, int ox)
@@ -121,7 +177,6 @@ int ui_input_arrowmenu1(int height, int oy, int ox)
 
     return y - oy;
 }
-
 
 void ui_draw_about()
 {
