@@ -81,7 +81,7 @@ Fișierul bazei de date este generat automat dacă nu există deja în folderul 
 |4  |Ionescu   |Valentin     |1999      |7           |22        |2    |9.41 |700      |
 |5  |Minea     |Dana         |2002      |6           |13        |2    |8.71 |500      |
 |6  |Tomsa     |Ruxandra     |2003      |2           |7         |3    |9.21 |700      |
-|7  |Răducanu  |Paula Ilinca |2001      |7           |12        |3    |7.65 |500      |
+|7  |Raducanu  |Paula Ilinca |2001      |7           |12        |3    |7.65 |500      |
 |8  |Anghelescu|Izabela      |2002      |12          |21        |2    |6.20 |0        |
 |9  |Mica      |Alex         |2000      |1           |30        |2    |8.11 |0        |
 |10 |Stancu    |Stefan       |2006      |1           |1         |1    |9.89 |700      |
