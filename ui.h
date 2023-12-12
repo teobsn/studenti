@@ -178,6 +178,82 @@ int ui_input_arrowmenu1(int height, int oy, int ox)
     return y - oy;
 }
 
+int ui_input_text(int oy, int ox, char r[])
+{
+    r[0] = '\0';
+    bool run = true;
+    while (run)
+    {
+        int key = getch();
+        switch (key)
+        {
+        case controls_enter:
+        case controls_enter_2:
+            return 0;
+            break;
+
+        case controls_esc:
+            return 2;
+            break;
+
+        case controls_backsp:
+        case controls_backsp_2:
+            r[strlen(r) - 1] = '\0';
+            mvaddstr(oy, ox + strlen(r), " ");
+            move(oy, ox + strlen(r));
+            break;
+
+        default:
+            if ((65 <= key && key <= 122) || key == 32) // 65 = A, 122 = Z
+                r[strlen(r)] = (char)key;
+            mvaddstr(oy, ox, r);
+            break;
+        };
+    }
+    return 2;
+}
+
+int ui_input_number(int oy, int ox, int &r)
+{
+    r = 0;
+    bool run = true;
+    char r_aux[5];
+    while (run)
+    {
+        int key = getch();
+        switch (key)
+        {
+        case controls_enter:
+        case controls_enter_2:
+        case controls_esc:
+            return 0;
+            break;
+
+        case controls_backsp:
+        case controls_backsp_2:
+            mvaddstr(oy, ox + strlen(r_aux) - 1, " ");
+            r /= 10;
+            itoa(r, r_aux, 10);
+            break;
+
+        default:
+            if (48 <= key && key <= 57)
+            {
+                if (r < 1000)
+                {
+                    r *= 10;
+                    if (key != 48)
+                        r += key - 48;
+                }
+                itoa(r, r_aux, 10);
+            }
+            break;
+        }
+        mvaddstr(oy, ox, r_aux);
+    }
+    return 2;
+}
+
 void ui_draw_about()
 {
     clear();

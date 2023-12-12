@@ -254,6 +254,16 @@ void database_sort_cod()
     }
 }
 
+int database_next_cod()
+{
+    database_sort_cod();
+    for (int i = 2; i <= database_length; i++)
+        if (studenti[i].cod > studenti[i - 1].cod + 1)
+            return studenti[i - 1].cod + 1;
+
+    return database_length + 1;
+}
+
 void database_debug()
 {
     for (int i = 0; i <= database_length; i++)
