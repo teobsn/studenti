@@ -213,6 +213,38 @@ int ui_input_text(int oy, int ox, char r[])
     return 2;
 }
 
+int ui_input_text_realtime(int oy, int ox, char r[])
+{
+    int key = getch();
+    switch (key)
+    {
+    case controls_enter:
+    case controls_enter_2:
+        return 0;
+        break;
+
+    case controls_esc:
+        return 0;
+        break;
+
+    case controls_backsp:
+    case controls_backsp_2:
+        r[strlen(r) - 1] = '\0';
+        mvaddstr(oy, ox + strlen(r), " ");
+        move(oy, ox + strlen(r));
+        return 1;
+        break;
+
+    default:
+        if ((65 <= key && key <= 122) || key == 32) // 65 = A, 122 = Z
+            r[strlen(r)] = (char)key;
+        mvaddstr(oy, ox, r);
+        return 1;
+        break;
+    };
+    return 0;
+}
+
 int ui_input_number(int oy, int ox, int &r)
 {
     r = 0;

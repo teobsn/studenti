@@ -14,7 +14,7 @@
 #define database_ngrupe 8
 
 // Search params
-#define search_minlength 3
+#define search_minlength 1
 
 // UI
 #define ui_maxlength 128

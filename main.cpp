@@ -98,7 +98,7 @@ int database_n_corigenti()
 
 // Subprograme interfata
 
-void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, int set_promovare, int height, int ux, int y, int ll[])
+void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, int set_promovare, int height, int ux, int y, int ll[], char search[])
 {
     int tb_length = std::min(database_length, height);
     for (int i = 0; i <= tb_length; i++)
@@ -219,6 +219,15 @@ void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, i
         if (set_grupa)
             if (set_grupa != studenti[i].grupa)
                 st_valid = false;
+
+        if (strlen(search))
+        {
+            char nc[database_n_maxlength + database_pn_maxlength + 2];
+            database_cat_name(i, nc);
+            strcat(nc, " ");
+            if (search_comparison(nc, search) == -1)
+                st_valid = false;
+        }
 
         if (st_valid)
         {
@@ -372,13 +381,14 @@ void ui_draw_database()
     // Extra
 
     int ll[database_size]; // ll[i], unde i este al i-lea student afisat are ca valoare pozitia studentului in structura
+    char search[database_maxlinelength] = "\0";
 
     // I/O
 
     int oy = 6, ox = 1, height = LINES - 8;
     int y = oy;
 
-    ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll);
+    ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
 
     refresh();
 
@@ -412,6 +422,10 @@ void ui_draw_database()
             break;
 
         case 99: // C
+            move(3, 11);
+            while (ui_input_text_realtime(3, 11, search))
+                ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
+            move(y, ox);
             break;
 
         case 115: // S
@@ -419,7 +433,7 @@ void ui_draw_database()
             set_sortare++;
             set_sortare %= 5;
             mvaddstr(4 + set_sortare, w2x0 + 2, "*");
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll);
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
             break;
 
         case 98: // B
@@ -437,7 +451,7 @@ void ui_draw_database()
                 strcpy(set_bursier_aux, "D");
                 break;
             }
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll);
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
             mvaddstr(10, COLS - 3, set_bursier_aux);
             break;
 
@@ -456,14 +470,14 @@ void ui_draw_database()
                 strcpy(set_promovare_aux, "D");
                 break;
             }
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll);
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
             mvaddstr(12, COLS - 3, set_promovare_aux);
             break;
 
         case 100: // D
             database_delete(studenti[ll[y - oy + 1]].cod);
             database_update_bursieri();
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll);
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
             break;
 
         case 97: // A
@@ -476,7 +490,12 @@ void ui_draw_database()
             mvaddstr(LINES - 1, 0, "Nume: ");
 
             if (ui_input_text(LINES - 1, strlen("Nume: "), student_n.nume) == 2)
+            {
+                for (int i = 0; i < COLS; i++)
+                    mvaddstr(LINES - 1, i, " ");
+                mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
                 break;
+            }
 
             for (int i = 0; i < COLS; i++)
                 mvaddstr(LINES - 1, i, " ");
@@ -484,7 +503,12 @@ void ui_draw_database()
             mvaddstr(LINES - 1, 0, "Prenume: ");
 
             if (ui_input_text(LINES - 1, strlen("Prenume: "), student_n.prenume) == 2)
+            {
+                for (int i = 0; i < COLS; i++)
+                    mvaddstr(LINES - 1, i, " ");
+                mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
                 break;
+            }
 
             for (int i = 0; i < COLS; i++)
                 mvaddstr(LINES - 1, i, " ");
@@ -492,7 +516,12 @@ void ui_draw_database()
             mvaddstr(LINES - 1, 0, "An nastere: ");
 
             if (ui_input_number(LINES - 1, strlen("An nastere: "), student_n.dn.an) == 2)
+            {
+                for (int i = 0; i < COLS; i++)
+                    mvaddstr(LINES - 1, i, " ");
+                mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
                 break;
+            }
 
             for (int i = 0; i < COLS; i++)
                 mvaddstr(LINES - 1, i, " ");
@@ -500,7 +529,12 @@ void ui_draw_database()
             mvaddstr(LINES - 1, 0, "Luna nastere: ");
 
             if (ui_input_number(LINES - 1, strlen("Luna nastere: "), student_n.dn.luna) == 2)
+            {
+                for (int i = 0; i < COLS; i++)
+                    mvaddstr(LINES - 1, i, " ");
+                mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
                 break;
+            }
 
             for (int i = 0; i < COLS; i++)
                 mvaddstr(LINES - 1, i, " ");
@@ -508,7 +542,12 @@ void ui_draw_database()
             mvaddstr(LINES - 1, 0, "Zi nastere: ");
 
             if (ui_input_number(LINES - 1, strlen("Zi nastere: "), student_n.dn.zi) == 2)
+            {
+                for (int i = 0; i < COLS; i++)
+                    mvaddstr(LINES - 1, i, " ");
+                mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
                 break;
+            }
 
             for (int i = 0; i < COLS; i++)
                 mvaddstr(LINES - 1, i, " ");
@@ -516,7 +555,12 @@ void ui_draw_database()
             mvaddstr(LINES - 1, 0, "Grupa: ");
 
             if (ui_input_number(LINES - 1, strlen("Grupa: "), student_n.grupa) == 2)
+            {
+                for (int i = 0; i < COLS; i++)
+                    mvaddstr(LINES - 1, i, " ");
+                mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
                 break;
+            }
 
             for (int i = 0; i < COLS; i++)
                 mvaddstr(LINES - 1, i, " ");
@@ -525,7 +569,12 @@ void ui_draw_database()
 
             int student_n_medie_int;
             if (ui_input_number(LINES - 1, strlen("Medie (*100): "), student_n_medie_int) == 2)
+            {
+                for (int i = 0; i < COLS; i++)
+                    mvaddstr(LINES - 1, i, " ");
+                mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
                 break;
+            }
             student_n.medie = (float)student_n_medie_int / 100;
 
             student_n.val_bursa = 0;
@@ -539,7 +588,7 @@ void ui_draw_database()
             mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
 
             database_update_bursieri();
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll);
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
 
             break;
 
@@ -579,7 +628,7 @@ void ui_draw_database()
                     }
                     break;
                 }
-                ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll);
+                ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
                 mvaddstr(11, w2x0 + 2 + strlen("Grupa:"), "         ");
                 mvaddstr(11, COLS - 2 - strlen(set_grupa_aux), set_grupa_aux);
             }

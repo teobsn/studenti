@@ -4,7 +4,7 @@
 int search_comparison(char s[], char c[])
 {
     if (strlen(c) < search_minlength)
-        return -1;
+        return -2;
 
     char aux[database_n_maxlength + database_pn_maxlength + 1];
     for (int i = 0; i < std::strlen(s) - strlen(c); i++)
