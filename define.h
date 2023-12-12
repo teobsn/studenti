@@ -2,6 +2,10 @@
 #define settings_filename "settings.ini"
 #define database_filename "database.csv"
 
+#define database_errorlog_filename "log_database.txt"
+#define settings_errorlog_filename "log_settings.txt"
+
+
 // File max line length
 #define settings_maxlinelength 256
 #define database_maxlinelength 256

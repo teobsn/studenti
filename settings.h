@@ -4,6 +4,8 @@
 #include <iostream>
 #include "define.h"
 
+std::ofstream ferr_settings(settings_errorlog_filename);
+
 int val_bursa1 = -1;
 int val_bursa2 = -1;
 int procstud_bursa1 = -1;
@@ -29,7 +31,7 @@ void settings_set(char key[], char value[])
             procstud_bursa2 = std::atoi(value);
             break;
         default:
-            std::cerr << "Settings key is invalid: " << "key: '" << key << "' with value: '" << value << "'";
+            ferr_settings << "Settings key is invalid: " << "key: '" << key << "' with value: '" << value << "'";
     }
     */
 
@@ -44,25 +46,25 @@ void settings_set(char key[], char value[])
     else if (!strcmp(key, "medie_min"))
         medie_min = std::atoi(value);
     else
-        std::cerr << "(err) Settings: key is invalid: "
-                  << "key: '" << key << "' with value: '" << value << "'\n";
+        ferr_settings << "(err) Settings: key is invalid: "
+                      << "key: '" << key << "' with value: '" << value << "'\n";
 }
 
 void settings_validate()
 {
     if (procstud_bursa1 + procstud_bursa2 > 100)
-        std::cerr << "(err) Settings: procstud_bursa1 + procstud_bursa2 > 100\n";
+        ferr_settings << "(err) Settings: procstud_bursa1 + procstud_bursa2 > 100\n";
 
     if (procstud_bursa1 == -1)
-        std::cerr << "(err) Settings: procstud_bursa1 missing or =-1\n";
+        ferr_settings << "(err) Settings: procstud_bursa1 missing or =-1\n";
     if (procstud_bursa2 == -1)
-        std::cerr << "(err) Settings: procstud_bursa2 missing or =-1\n";
+        ferr_settings << "(err) Settings: procstud_bursa2 missing or =-1\n";
     if (val_bursa1 == -1)
-        std::cerr << "(err) Settings: val_bursa1 missing or =-1\n";
+        ferr_settings << "(err) Settings: val_bursa1 missing or =-1\n";
     if (val_bursa2 == -1)
-        std::cerr << "(err) Settings: val_bursa2 missing or =-1\n";
+        ferr_settings << "(err) Settings: val_bursa2 missing or =-1\n";
     if (medie_min == -1)
-        std::cerr << "(err) Settings: medie_min missing or =-1\n";
+        ferr_settings << "(err) Settings: medie_min missing or =-1\n";
 }
 
 void settings_read()

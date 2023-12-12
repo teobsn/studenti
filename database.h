@@ -4,6 +4,8 @@
 #include <iostream>
 #include "define.h"
 
+std::ofstream ferr_database(database_errorlog_filename);
+
 struct data
 {
     int an, luna, zi;
@@ -91,17 +93,12 @@ void database_delete(int cod)
         database_length--;
     }
     else
-        std::cerr << "(err) Cod invalid: " << cod << "\n";
+        ferr_database << "(err) Cod invalid: " << cod << "\n";
 }
 
 void database_validate()
 {
-    // std::cerr << "(err) Database: ?????\n";
-
-    /*
-    for (int i = 0; i < database_length; i++)
-        std::cerr << studenti[i].cod << " " << studenti[i].nume << " " << studenti[i].prenume << " " << studenti[i].dn.an << "/" << studenti[i].dn.luna << "/" << studenti[i].dn.zi << " " << studenti[i].grupa << " " << studenti[i].medie << " " << studenti[i].val_bursa << "\n";
-    */
+    // nu e necesara, validarea se face la momentul adaugarii unui student din interfata
 }
 
 void database_read()
@@ -267,6 +264,6 @@ int database_next_cod()
 void database_debug()
 {
     for (int i = 0; i <= database_length; i++)
-        std::cerr << studenti[i].cod << " " << studenti[i].nume << " " << studenti[i].prenume << " " << studenti[i].dn.an << "/" << studenti[i].dn.luna << "/" << studenti[i].dn.zi << " " << studenti[i].grupa << " " << studenti[i].medie << " " << studenti[i].val_bursa << "\n";
-    std::cerr << "\n";
+        ferr_database << studenti[i].cod << " " << studenti[i].nume << " " << studenti[i].prenume << " " << studenti[i].dn.an << "/" << studenti[i].dn.luna << "/" << studenti[i].dn.zi << " " << studenti[i].grupa << " " << studenti[i].medie << " " << studenti[i].val_bursa << "\n";
+    ferr_database << "\n";
 }

@@ -422,23 +422,29 @@ void ui_draw_database()
         int key = getch();
         switch (key)
         {
-        case controls_arr_down:{
+        case controls_arr_down:
+        {
             y = std::min(std::min(y + 1, oy + height - 1), oy + database_length - 1);
             move(y, ox);
-            break;}
+            break;
+        }
 
-        case controls_arr_up:{
+        case controls_arr_up:
+        {
             y = std::max(y - 1, oy);
             move(y, ox);
-            break;}
+            break;
+        }
 
         case controls_backsp:
         case controls_backsp_2:
             break;
 
-        case controls_esc:{
+        case controls_esc:
+        {
             run = false;
-            break;}
+            break;
+        }
 
         case controls_enter:
         case controls_enter_2:
