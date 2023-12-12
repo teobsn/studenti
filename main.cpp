@@ -276,7 +276,7 @@ void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, i
             if (studenti[i].dn.zi < 10)
                 strcat(aux_dn, " ");
             strcat(aux_dn, aux_dn_d);
-            mvaddstr(5 + k, xdn, aux_dn);
+            mvaddstr(5 + k, xdn + 4 - strlen(aux_dn_y), aux_dn);
 
             itoa(studenti[i].grupa, aux_g, 10);
             mvaddstr(5 + k, xg - 1, aux_g);
@@ -370,7 +370,7 @@ void ui_draw_database()
     mvaddstr(3, 2, "Cautare:");
 
     // Indicatii taste
-    char aux_indicatii[] = "ESC=Iesire   A=Adaugare   D=Stergere   C=Cautare   S=Sortare   B=Bursier   G=Grupa   P=Promovat";
+    char aux_indicatii[] = "ESC=Iesire   A=Adaugare   B=Bursier   C=Cautare   D=Stergere   G=Grupa   P=Promovat   S=Sortare";
     mvaddstr(LINES - 1, COLS / 2 - strlen(aux_indicatii) / 2, aux_indicatii);
 
     // Optiuni
@@ -422,92 +422,38 @@ void ui_draw_database()
         int key = getch();
         switch (key)
         {
-        case controls_arr_down:
+        case controls_arr_down:{
             y = std::min(std::min(y + 1, oy + height - 1), oy + database_length - 1);
             move(y, ox);
-            break;
-        case controls_arr_up:
+            break;}
+
+        case controls_arr_up:{
             y = std::max(y - 1, oy);
             move(y, ox);
-            break;
+            break;}
 
         case controls_backsp:
         case controls_backsp_2:
             break;
 
-        case controls_esc:
+        case controls_esc:{
             run = false;
-            break;
+            break;}
 
         case controls_enter:
         case controls_enter_2:
             break;
 
-        case 99: // C
-            move(3, 11);
-            while (ui_input_text_realtime(3, 11, search))
-                ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
-            move(y, ox);
-            break;
-
-        case 115: // S
-            mvaddstr(4 + set_sortare, w2x0 + 2, " ");
-            set_sortare++;
-            set_sortare %= 5;
-            mvaddstr(4 + set_sortare, w2x0 + 2, "*");
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
-            break;
-
-        case 98: // B
-            set_bursier++;
-            set_bursier %= 3;
-            switch (set_bursier)
-            {
-            case 0:
-                strcpy(set_bursier_aux, "-");
-                break;
-            case 1:
-                strcpy(set_bursier_aux, "N");
-                break;
-            case 2:
-                strcpy(set_bursier_aux, "D");
-                break;
-            }
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
-            mvaddstr(10, COLS - 3, set_bursier_aux);
-            break;
-
-        case 112: // P
-            set_promovare++;
-            set_promovare %= 3;
-            switch (set_promovare)
-            {
-            case 0:
-                strcpy(set_promovare_aux, "-");
-                break;
-            case 1:
-                strcpy(set_promovare_aux, "N");
-                break;
-            case 2:
-                strcpy(set_promovare_aux, "D");
-                break;
-            }
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
-            mvaddstr(12, COLS - 3, set_promovare_aux);
-            break;
-
-        case 100: // D
-            database_delete(studenti[ll[y - oy + 1]].cod);
-            database_update_bursieri();
-            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
-            break;
-
-        case 97: // A
+        case 65: // A
+        case 97: // a
+        {
             for (int i = 0; i < COLS; i++)
                 mvaddstr(LINES - 1, i, " ");
             struct student student_n;
 
             student_n.cod = database_next_cod();
+            strcpy(student_n.nume, "\0");
+            strcpy(student_n.prenume, "\0");
 
             mvaddstr(LINES - 1, 0, "Nume: ");
 
@@ -612,9 +558,54 @@ void ui_draw_database()
             database_update_bursieri();
             ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
 
+            move(y, ox);
             break;
+        }
 
-        case 103: // G
+        case 66: // B
+        case 98: // b
+        {
+            set_bursier++;
+            set_bursier %= 3;
+            switch (set_bursier)
+            {
+            case 0:
+                strcpy(set_bursier_aux, "-");
+                break;
+            case 1:
+                strcpy(set_bursier_aux, "N");
+                break;
+            case 2:
+                strcpy(set_bursier_aux, "D");
+                break;
+            }
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
+            mvaddstr(10, COLS - 3, set_bursier_aux);
+            break;
+        }
+
+        case 67: // C
+        case 99: // c
+        {
+            move(3, 11);
+            while (ui_input_text_realtime(3, 11, search))
+                ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
+            move(y, ox);
+            break;
+        }
+
+        case 68:  // D
+        case 100: // d
+        {
+            database_delete(studenti[ll[y - oy + 1]].cod);
+            database_update_bursieri();
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
+            break;
+        }
+
+        case 71:  // G
+        case 103: // g
+        {
             move(11, COLS - 2);
             bool run_aux = true;
             while (run_aux)
@@ -649,7 +640,7 @@ void ui_draw_database()
                         itoa(set_grupa, set_grupa_aux, 10);
                     }
                     break;
-                }
+                };
                 ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
                 mvaddstr(11, w2x0 + 2 + strlen("Grupa:"), "         ");
                 mvaddstr(11, COLS - 2 - strlen(set_grupa_aux), set_grupa_aux);
@@ -657,6 +648,41 @@ void ui_draw_database()
             move(y, ox);
             break;
         }
+
+        case 80:  // P
+        case 112: // p
+        {
+            set_promovare++;
+            set_promovare %= 3;
+            switch (set_promovare)
+            {
+            case 0:
+                strcpy(set_promovare_aux, "-");
+                break;
+            case 1:
+                strcpy(set_promovare_aux, "N");
+                break;
+            case 2:
+                strcpy(set_promovare_aux, "D");
+                break;
+            };
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
+            mvaddstr(12, COLS - 3, set_promovare_aux);
+            break;
+        }
+
+        case 83:
+        case 115: // S
+        {
+            mvaddstr(4 + set_sortare, w2x0 + 2, " ");
+            set_sortare++;
+            set_sortare %= 5;
+            mvaddstr(4 + set_sortare, w2x0 + 2, "*");
+            ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
+            move(y, ox);
+            break;
+        }
+        };
     }
 }
 

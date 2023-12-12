@@ -204,8 +204,13 @@ int ui_input_text(int oy, int ox, char r[])
             break;
 
         default:
-            if ((65 <= key && key <= 122) || key == 32) // 65 = A, 122 = Z
-                r[strlen(r)] = (char)key;
+            if ((65 <= key && key <= 90) || (97 <= key && key <= 122) || (key == 32) || (key == 45)) // 65 = A, 122 = Z, 45 = -
+            {
+                int r_strl = strlen(r);
+                r[r_strl] = (char)key;
+                r[r_strl + 1] = '\0';
+            }
+
             mvaddstr(oy, ox, r);
             break;
         };
@@ -236,8 +241,12 @@ int ui_input_text_realtime(int oy, int ox, char r[])
         break;
 
     default:
-        if ((65 <= key && key <= 122) || key == 32) // 65 = A, 122 = Z
-            r[strlen(r)] = (char)key;
+        if ((65 <= key && key <= 90) || (97 <= key && key <= 122) || (key == 32) || (key == 45)) // 65 = A, 122 = Z, 45 = -
+        {
+            int r_strl = strlen(r);
+            r[r_strl] = (char)key;
+            r[r_strl + 1] = '\0';
+        }
         mvaddstr(oy, ox, r);
         return 1;
         break;
@@ -258,7 +267,10 @@ int ui_input_number(int oy, int ox, int &r)
         case controls_enter:
         case controls_enter_2:
         case controls_esc:
-            return 0;
+            if (r)
+                return 0;
+            else
+                return 2;
             break;
 
         case controls_backsp:
