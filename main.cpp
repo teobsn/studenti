@@ -220,12 +220,14 @@ void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, i
             if (set_grupa != studenti[i].grupa)
                 st_valid = false;
 
+        int search_ri;
         if (strlen(search))
         {
             char nc[database_n_maxlength + database_pn_maxlength + 2];
             database_cat_name(i, nc);
             strcat(nc, " ");
-            if (search_comparison(nc, search) == -1)
+            search_ri = search_comparison(nc, search);
+            if (search_ri == -1)
                 st_valid = false;
         }
 
@@ -236,6 +238,17 @@ void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, i
 
             mvaddstr(5 + k, xn, studenti[i].nume);
             mvaddstr(5 + k, xpn, studenti[i].prenume);
+
+            if (strlen(search))
+                if (search_ri < strlen(studenti[i].nume))
+                    if (strlen(search) > strlen(studenti[i].nume)){
+                        mvchgat(5 + k, xn + search_ri, strlen(studenti[i].nume), A_UNDERLINE, NULL, NULL);
+                        mvchgat(5 + k, xpn, strlen(search) - strlen(studenti[i].nume) - 1, A_UNDERLINE, NULL, NULL);
+                    }
+                    else
+                        mvchgat(5 + k, xn + search_ri, strlen(search), A_UNDERLINE, NULL, NULL);
+                else
+                    mvchgat(5 + k, xpn + search_ri - strlen(studenti[i].nume) - 1, strlen(search), A_UNDERLINE, NULL, NULL);
 
             char aux_dn_y[5], aux_dn_m[3], aux_dn_d[3];
             itoa(studenti[i].dn.an, aux_dn_y, 10);
