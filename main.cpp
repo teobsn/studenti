@@ -830,6 +830,13 @@ void ui_draw_mainmenu()
         mvaddstr(LINES / 2 + k + i, COLS / 2 + 1, ui_menu_opts1[i]);
         mvchgat(LINES / 2 + k + i, COLS / 2 + 1, 1, A_UNDERLINE, NULL, NULL);
     }
+
+    for (int i = 0; i <= 4; i++)
+    {
+        attrset(A_BOLD | COLOR_PAIR(4));
+        mvaddstr(LINES / 2 - 8 + i, COLS / 2 - strlen(ui_about_2[i]) / 2, ui_about_2[i]);
+        attroff(A_BOLD | COLOR_PAIR(4));
+    }
     refresh();
     // https://pubs.opengroup.org/onlinepubs/7908799/xcurses/chgat.html
     // https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/attrib.html

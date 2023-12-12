@@ -16,6 +16,13 @@ char ui_about_1[][ui_maxlength] = {
     "Matei Daria",
     "Jucan Alexandra"};
 
+char ui_about_2[][ui_maxlength] = { // https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
+    "   _____ __            __           __  _ \n",
+    "  / ___// /___  ______/ /__  ____  / /_(_)\n",
+    "  |__ |/ __/ / / / __  / _ |/ __ |/ __/ / \n",
+    " ___/ / /_/ /_/ / /_/ /  __/ / / / /_/ /  \n",
+    "/____/|__/|__,_/|__,_/|___/_/ /_/|__/_/   \n"};
+
 char ui_menu_opts1[][ui_maxlength] = {
     "Baza de date",
     "Setari",
