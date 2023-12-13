@@ -101,7 +101,7 @@ int database_n_corigenti()
 void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, int set_promovare, int height, int ux, int y, int ll[], char search[])
 {
     int tb_length = std::min(database_length, height);
-    for (int i = 0; i <= tb_length; i++)
+    for (int i = 0; i <= height; i++)
         for (int j = 1; j <= ux; j++)
             mvaddstr(5 + i, j, " ");
 
@@ -133,6 +133,9 @@ void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, i
         lmaxgrupa = ncif(studenti[i].grupa) > lmaxgrupa ? ncif(studenti[i].grupa) : lmaxgrupa;
         lmaxvalbursa = ncif(studenti[i].val_bursa) > lmaxvalbursa ? ncif(studenti[i].val_bursa) : lmaxvalbursa;
     }
+
+    for (int i = 1; i <= ux; i++)
+        mvaddstr(4, i, "-"), mvaddstr(5, i, " ");
 
     int x = 2;
     mvaddstr(5, x, "Cod");
@@ -279,14 +282,14 @@ void ui_draw_database_refresh(int set_sortare, int set_bursier, int set_grupa, i
             mvaddstr(5 + k, xdn + 4 - strlen(aux_dn_y), aux_dn);
 
             itoa(studenti[i].grupa, aux_g, 10);
-            mvaddstr(5 + k, xg - 1, aux_g);
+            mvaddstr(5 + k, xg - ncif(studenti[i].grupa), aux_g);
 
             mvaddstr(5 + k, xm - strlen(ftoa(studenti[i].medie)), ftoa(studenti[i].medie));
 
             itoa(studenti[i].val_bursa, aux_vb, 10);
             mvaddstr(5 + k, xvb - strlen(aux_vb), aux_vb);
 
-            mvaddstr(5 + k, xprom, database_ver_corigent(i) ? "Da" : "Nu");
+            mvaddstr(5 + k, xprom + strlen("Promovat") / 2 - 1, database_ver_corigent(i) ? "Da" : "Nu");
 
             ll[k] = i;
             k++;
@@ -606,6 +609,7 @@ void ui_draw_database()
             database_delete(studenti[ll[y - oy + 1]].cod);
             database_update_bursieri();
             ui_draw_database_refresh(set_sortare, set_bursier, set_grupa, set_promovare, height, w2x0 - 1, y - oy, ll, search);
+            move(y, ox);
             break;
         }
 

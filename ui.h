@@ -265,7 +265,7 @@ int ui_input_number(int oy, int ox, int &r)
 {
     r = 0;
     bool run = true;
-    char r_aux[5];
+    char r_aux[5] = "\0";
     while (run)
     {
         int key = getch();
