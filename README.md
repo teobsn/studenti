@@ -141,6 +141,7 @@ Meniul principal al programului este minimalist și oferă utilizatorului 4 opț
 - Accesarea setărilor
 - Accesarea 
 - Ieșirea din program
+
 Deși textul opțiunilor nu pare centrat, acest lucru este intenționat. Textul începe mereu de la a doua jumătate a terminalului (altfel, selectorul ar trebui să își modifice și poziția coloanei pe care se află)
 
 #### Interfața setărilor
